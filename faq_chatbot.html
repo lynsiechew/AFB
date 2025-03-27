@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>FAQ Chatbot</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    #chatbox { width: 100%; max-width: 600px; margin: auto; border: 1px solid #ccc; padding: 15px; border-radius: 10px; }
+    .message { margin: 10px 0; }
+    .user { font-weight: bold; color: #1a73e8; }
+    .bot { color: #333; }
+    #inputArea { margin-top: 10px; display: flex; }
+    #inputArea input { flex-grow: 1; padding: 8px; }
+    #inputArea button { padding: 8px 15px; }
+  </style>
+</head>
+<body>
+  <div id="chatbox">
+    <div id="chat"></div>
+    <div id="inputArea">
+      <input type="text" id="userInput" placeholder="Ask a question...">
+      <button onclick="handleInput()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const faqData = [
+      {
+        keywords: "quick ratio, acid test, prepaid expenses included",
+        answer: "For the quick ratio, your numerator is: Current assets - inventory - prepayments."
+      },
+      {
+        keywords: "dividend in trial balance",
+        answer: "You need to find out how many shares are in issue and multiply by dividend per share."
+      },
+      {
+        keywords: "dividend payable, dividend taken from reserves, declared dividend",
+        answer: "If the question scenario doesn't say paid we don't put in cash flow. Assume declared not paid."
+      },
+      {
+        keywords: "Case studies in exam, case study, examples, real world",
+        answer: "The textbook provides good real world boxes to revise from. Know 2-3 examples per topic."
+      },
+      {
+        keywords: "essay question",
+        answer: "Well, i would have thought that we should be using real-world examples and structuring as per PEEL."
+      }
+    ];
+
+    function handleInput() {
+      const input = document.getElementById('userInput').value.trim().toLowerCase();
+      const chat = document.getElementById('chat');
+      if (!input) return;
+
+      // Display user message
+      chat.innerHTML += `<div class='message user'>You: ${input}</div>`;
+
+      // Find matching FAQ
+      let response = "Sorry, I don't know the answer to that.";
+      for (let item of faqData) {
+        const keywords = item.keywords.toLowerCase().split(',');
+        if (keywords.some(kw => input.includes(kw.trim()))) {
+          response = item.answer;
+          break;
+        }
+      }
+
+      // Display bot response
+      chat.innerHTML += `<div class='message bot'>Bot: ${response}</div>`;
+      document.getElementById('userInput').value = '';
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
+</body>
+</html>
